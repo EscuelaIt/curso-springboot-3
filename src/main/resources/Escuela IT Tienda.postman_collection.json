@@ -1,0 +1,115 @@
+{
+	"info": {
+		"_postman_id": "716e2148-2034-41b3-a5a6-48f98bdd3ed6",
+		"name": "Escuela IT Tienda",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8114859"
+	},
+	"item": [
+		{
+			"name": "Get Personas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/personas",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"personas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Persona por id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/personas/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"personas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modificar Persona",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Rafael Lakovich\",\r\n    \"lastName\": \"Benedettelli\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/personas",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"personas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear Persona",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 4,\r\n    \"name\": \"Lionel\",\r\n    \"lastName\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/personas",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"personas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Borrar Persona por id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/personas/2",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"personas",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
