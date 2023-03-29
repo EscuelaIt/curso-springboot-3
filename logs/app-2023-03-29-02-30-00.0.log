@@ -1,0 +1,6 @@
+14:30:00.492 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+14:30:00.518 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+14:30:00.519 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+14:30:00.521 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.4]
+14:30:00.690 [main] INFO  o.a.c.c.C.[.[.[/escuelait/api/v1/endpoints] - Initializing Spring embedded WebApplicationContext
+14:30:00.691 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2489 ms

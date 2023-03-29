@@ -10,8 +10,8 @@ public class HolaMundoRestController {
 
     @GetMapping("/saludo/{user}")
     public String holaMundo(@PathVariable String user) {
+
         return "Hola Mundo Spring " + user;
     }
-
 
 }

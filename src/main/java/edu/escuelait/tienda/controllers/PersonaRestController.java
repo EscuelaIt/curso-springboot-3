@@ -1,18 +1,8 @@
 package edu.escuelait.tienda.controllers;
 
-import edu.escuelait.tienda.configurations.AppConfig;
-import edu.escuelait.tienda.configurations.TiendaParametrosConfig;
 import edu.escuelait.tienda.domain.Persona;
-import edu.escuelait.tienda.exceptions.ProductoNotFoundException;
-import edu.escuelait.tienda.services.PersonasService;
-import edu.escuelait.tienda.validators.groups.OnCreate;
-import edu.escuelait.tienda.validators.groups.OnUpdate;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import edu.escuelait.tienda.exceptions.PersonaNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,85 +15,38 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/personas")
-@Tag(name = "API personas",
-        description = "CRUD de personas de tienda")
 public class PersonaRestController {
-
-
-    //@Autowired
-    PersonasService personasService;
-
-    AppConfig appConfig;
-
-    TiendaParametrosConfig tiendaParametrosConfig;
-
-
-    //Se recomienda esta inyeccion
-    public PersonaRestController(@Lazy PersonasService personasService,
-                                 AppConfig appConfig,
-                                 TiendaParametrosConfig tiendaParametrosConfig) {
-
-        log.info("AppConfig {}", appConfig);
-        log.info("tiendaParametrosConfig {}", tiendaParametrosConfig);
-
-
-        this.personasService = personasService;
-    }
 
     //Almacen para tener un lote de datos prueba
     ArrayList<Persona> personas = new ArrayList<>(
             List.of(new Persona(1L, "Rafael"),
                     new Persona(2L, "Miguel"),
-                    new Persona(3L, "Alvaro"),
-                    new Persona(4L, "Miguel1"),
-                    new Persona(5L, "Alvaro1"),
-                    new Persona(6L, "Miguel1"),
-                    new Persona(7L, "Alvaro2"),
-                    new Persona(8L, "Rafael2"),
-                    new Persona(9L, "Miguel2"),
-                    new Persona(10L, "Alvaro3"),
-                    new Persona(11L, "Miguel3"),
-                    new Persona(12L, "Alvaro3"),
-                    new Persona(13L, "Miguel4"),
-                    new Persona(14L, "Alvaro4"))
-    );
+                    new Persona(3L, "Alvaro")));
 
-
-    @ApiResponse(responseCode = "200", description = "Operación exitosa")
-    @ApiResponse(responseCode = "400", description = "Error de petición")
-    @ApiResponse(responseCode = "404", description = "Recurso no encontrado")
-    @Operation(summary = "Recupera una persona por Id", description = "Recupera una persona dado un id de tipo numérico")
     @GetMapping("/{id}")
-    public ResponseEntity<?> getPersonaById(
-            @Parameter(description = "Id de persona. Valor entero", required = true, example = "1")
-            @PathVariable Long id) {
+    public ResponseEntity<?> getPersonaById(@PathVariable Long id) {
 
+        //pedido invalido
         if (id < 0) {
             return ResponseEntity.badRequest().build();
         }
 
-        //Recorrer cada persona del array de personas
-        for (Persona persona : this.personas) {
-            //buscar cual tiene el id igual al solicitado
-            if (persona.getId().equals(id)) {
-                //retornar es persona
-                return ResponseEntity.ok(persona);
-            }
-        }
+        Persona persona = this.personas.stream().filter(per -> id == per.getId()).
+                findFirst().orElseThrow(() -> new PersonaNotFoundException("no existe la persona"));
 
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(persona);
     }
 
     @GetMapping
     public ResponseEntity<?> listPersonas() {
-        List<Persona> personas = personasService.listAllPersonas();
-        return ResponseEntity.ok(personas);
+
+        return ResponseEntity.ok(this.personas);
     }
 
     @PostMapping
-    public ResponseEntity<?> createPersona(@RequestBody @Validated(OnCreate.class) Persona persona) {
-
+    public ResponseEntity<?> createPersona(@Validated @RequestBody Persona persona) {
         this.personas.add(persona);
+
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -114,60 +57,27 @@ public class PersonaRestController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updatePersona(@RequestBody @Validated(OnUpdate.class) Persona persona) {
-
+    public ResponseEntity<?> updatePersona(@RequestBody Persona persona) {
 
         return this.personas.stream().filter(per -> per.getId() == persona.getId()).
                 findFirst().map(per -> {
-                    persona.setLastName(per.getLastName());
-                    persona.setName(per.getName());
-                    return ResponseEntity.ok(persona);
-                }).orElseThrow(ProductoNotFoundException::new);
-
+                    per.setLastName(persona.getLastName());
+                    per.setName(persona.getName());
+                    //TODO mas atributos
+                    return ResponseEntity.ok(per);
+                }).orElseThrow(() -> new PersonaNotFoundException("No se encontro la persona"));
 
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePersona(@PathVariable Long id) {
 
-        //Recorrer cada persona del array de personas
-        for (Persona persona : this.personas) {
-            //buscar cual tiene el id igual al solicitado
-            if (persona.getId().equals(id)) {
-                //borrar la persona
-                this.personas.remove(persona);
-                return ResponseEntity.noContent().build();
-            }
-        }
-
-        return ResponseEntity.notFound().build();
-
-    }
-
-
-    //Modifica solo un atributo del recurso
-    @PatchMapping("/{id}")
-    public ResponseEntity<?> modificarAtributo(@PathVariable Long id,
-                                               String attributeName, String newValue) {
-
-        //Recorrer cada persona del array de personas
-        for (Persona persona : this.personas) {
-            //buscar cual tiene el id igual al solicitado
-            if (persona.getId().equals(id)) {
-                //borrar la persona
-                if (attributeName.equalsIgnoreCase("name")) {
-                    persona.setName(newValue);
-                } else if (attributeName.equalsIgnoreCase("lastName")) {
-                    persona.setLastName(newValue);
-                }
-
-                return ResponseEntity.ok(persona);
-            }
-        }
-
-        return ResponseEntity.notFound().build();
-
+        return this.personas.stream().filter(persona -> id == persona.getId()).
+                findFirst().map(persona -> {
+                            this.personas.remove(persona);
+                            return ResponseEntity.noContent().build();
+                        }
+                ).orElseThrow(() -> new PersonaNotFoundException("no existe la persona"));
 
     }
 

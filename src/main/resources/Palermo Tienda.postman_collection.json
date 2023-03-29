@@ -1,0 +1,120 @@
+{
+	"info": {
+		"_postman_id": "8bd7fa8c-ba97-4994-8cac-814a560e48e5",
+		"name": "Palermo Tienda",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8114859"
+	},
+	"item": [
+		{
+			"name": "Personas",
+			"item": [
+				{
+					"name": "Get Personas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/personas",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"personas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Persona por id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/personas/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"personas",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar Persona",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Rafael Lakovich\",\r\n    \"lastName\": \"Benedettelli\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/personas",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"personas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Persona",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"id\": 4,\r\n        \"name\": \"Lionel\",\r\n        \"lastName\": \"Messi\",\r\n        \"domicilio\": \"rosar\",\r\n        \"edad\": 39,\r\n        \"casado\": false,\r\n        \"mail\": \"messi@arg.com\",\r\n        \"puntuacion\": 1,\r\n        \"ranking\": -3,\r\n        \"fechaNacimiento\": \"1992-01-01\",\r\n        \"registro\": \"2026-01-01\",\r\n        \"cuit\": \"0123456789123\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/personas",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"personas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar Persona por id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/personas/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"personas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

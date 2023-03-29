@@ -1,35 +1,27 @@
 package edu.escuelait.tienda.domain;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import edu.escuelait.tienda.validators.Cuit;
-import edu.escuelait.tienda.validators.groups.OnCreate;
-import edu.escuelait.tienda.validators.groups.OnUpdate;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.NonNull;
 
-@Schema(description = "Esta es una Persona...")
+import java.time.LocalDate;
+
 @Data
-@JsonPropertyOrder({"nombre", "edad", "id", "domicilio", "casado", "cuit"})
 public class Persona {
 
 
     @NonNull
-    @Schema(description = "Identificador único de persona.", example = "1")
     private Long id;
 
     @NonNull //Lombok, y es para hacer el atributo mandatorio en el constructor
-    @JsonProperty("nombre")
     private String name;
 
-    @JsonIgnore
-    @NotNull(groups = OnCreate.class) //Valor si o si
     private String lastName;
 
-    @NotBlank(groups = OnUpdate.class)
     @Size(min = 3, max = 6)
     private String domicilio;
 
@@ -41,11 +33,8 @@ public class Persona {
     //@AssertTrue
     private boolean casado;
 
-    @Cuit
-    private String cuit;
-
-/*
     @Email
+    @JsonIgnore
     private String mail;
 
     @Positive
@@ -63,9 +52,9 @@ public class Persona {
     @FutureOrPresent
     //@Future
     private LocalDate registro;
-*/
-    //España NIF
-    //Arg CUIT
 
+    //Custom validators
+    @Cuit
+    private String cuit;
 
 }
